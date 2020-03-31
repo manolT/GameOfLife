@@ -285,8 +285,7 @@ void Grid::resize(unsigned int newWidth, unsigned int newHeight) {
     
     for (int i = 0; i < this->height && i < newHeight; i++) {
         for (int j = 0; j < this->width && j < newWidth; j++) {
-            unsigned int index = get_index(j, i);
-            newVec[newWidth*i + j] = this->gridVector[index];
+            newVec[get_index_new_grid(j,i,newWidth)] = this->gridVector[get_index(j, i)];
         }
     }
     this->height = newHeight;
@@ -312,8 +311,11 @@ void Grid::resize(unsigned int newWidth, unsigned int newHeight) {
  *      The 1d offset from the start of the data array where the desired cell is located.
  */
 unsigned int Grid::get_index(unsigned int x, unsigned int y) const {
-    //std::cout << "index" << std::endl;
-    unsigned int index = this->width * y + x;
+    return get_index_new_grid(x,y,this->width);
+}
+
+unsigned int Grid::get_index_new_grid(unsigned int x, unsigned int y, unsigned int newWidth) const{
+    unsigned int index = newWidth * y + x;
     return index;
 }
 
@@ -492,7 +494,19 @@ Cell Grid::operator()(unsigned int x, unsigned int y) const {
  *      std::exception or sub-class if x0,y0 or x1,y1 are not valid coordinates within the grid
  *      or if the crop window has a negative size.
  */
+Grid Grid::crop(unsigned int x0, unsigned int y0, unsigned int x1, unsigned int y1) const {
+    unsigned int newWidth = x1 - x0;
+    unsigned int newHeight = y1 - y0;
+    Grid newGrid = Grid(newHeight, newWidth);
 
+    for (int y = y0; y < y1; y++) {
+        for (int x = x0; x < x1; x++) {
+            newGrid(x - x0, y - y0) = this->get(x, y);
+        }
+    }
+
+    return newGrid;
+}
 
 /**
  * Grid::merge(other, x0, y0, alive_only = false)
@@ -531,7 +545,18 @@ Cell Grid::operator()(unsigned int x, unsigned int y) const {
  * @throws
  *      std::exception or sub-class if the other grid being placed does not fit within the bounds of the current grid.
  */
-
+void Grid::merge(const Grid other, unsigned int x0, unsigned int y0, bool alive_only = false) {
+    for (int y = y0; y < width && y < y0 + other.get_width(); y++) {
+        for (int x = x0; x < height && x < x0 + other.get_width(), x++) {
+            if (other(x - x0, y - y0) == Cell::ALIVE && alive_only) {
+                this->get(x, y) = Cell::ALIVE;
+            }
+            else {
+                this->set(x, y, other(x - x0, y - y0));
+            }
+        }
+    }
+}
 
 /**
  * Grid::rotate(rotation)

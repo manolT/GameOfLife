@@ -36,6 +36,7 @@ class Grid {
         std::vector<Cell> gridVector;
 
         unsigned int get_index(unsigned int x, unsigned int y) const;
+        unsigned int get_index_new_grid(unsigned int x, unsigned int y, unsigned int newWidth) const;
 
     public:
 
@@ -54,5 +55,9 @@ class Grid {
         void set(unsigned int x, unsigned int y, Cell cell);
         Cell operator()(unsigned int x, unsigned int y) const;
         Cell& operator()(unsigned int x, unsigned int y);
+        Grid crop(unsigned int x0, unsigned int y0, unsigned int x1, unsigned int y1) const;
+        void merge(const Grid other, unsigned int x0, unsigned int y0, bool alive_only);
+
+
 
 };
