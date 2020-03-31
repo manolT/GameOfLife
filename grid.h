@@ -35,18 +35,24 @@ class Grid {
         unsigned int height;
         std::vector<Cell> gridVector;
 
+        unsigned int get_index(unsigned int x, unsigned int y) const;
+
     public:
 
         Grid(const unsigned int width, const unsigned int height);
         Grid();
         Grid(const unsigned int square_size);
-
+        //const??
         unsigned int get_width() const;
         unsigned int get_height() const;
         unsigned int get_total_cells() const;
         unsigned int get_alive_cells() const;
         unsigned int get_dead_cells() const;
-        void resize(unsigned int, unsigned int) const;
-        void resize(unsigned int) const;
+        void resize(unsigned int, unsigned int);
+        void resize(unsigned int);
+        Cell get(unsigned int x, unsigned int y) const;
+        void set(unsigned int x, unsigned int y, Cell cell);
+        Cell operator()(unsigned int x, unsigned int y) const;
+        Cell& operator()(unsigned int x, unsigned int y);
 
 };

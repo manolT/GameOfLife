@@ -136,7 +136,6 @@ unsigned int Grid::get_width() const {
  */
 
 unsigned int Grid::get_height() const {
-    std::cout << "height=" << this->height << std::endl;
     return this->height;
 }
 
@@ -166,7 +165,6 @@ unsigned int Grid::get_height() const {
  */
 unsigned int Grid::get_total_cells() const {
     unsigned int total_cells = this->height * this->width;
-    std::cout << "total_cells=" << total_cells << std::endl;
     return total_cells;
 }
 
@@ -200,7 +198,6 @@ unsigned int Grid::get_alive_cells() const {
             alive_counter++;
         }
     }
-    std::cout << "alive_counter=" << alive_counter << std::endl;
     return alive_counter;
 }
 
@@ -235,7 +232,6 @@ unsigned int Grid::get_dead_cells() const {
             dead_counter++;
         }
     }
-    std::cout << "dead_counter=" << dead_counter << std::endl;
     return dead_counter;
 }
 
@@ -257,6 +253,10 @@ unsigned int Grid::get_dead_cells() const {
  * @param square_size
  *      The new edge size for both the width and height of the grid.
  */
+void Grid::resize(unsigned int square_size){
+    this->resize(square_size, square_size);
+}
+
 
 
 /**
@@ -279,7 +279,21 @@ unsigned int Grid::get_dead_cells() const {
  * @param new_height
  *      The new height for the grid.
  */
+void Grid::resize(unsigned int newWidth, unsigned int newHeight) {
+    std::vector<Cell> newVec(newWidth * newHeight, Cell::DEAD);
+    
+    
+    for (int i = 0; i < this->height && i < newHeight; i++) {
+        for (int j = 0; j < this->width && j < newWidth; i++) {
+            unsigned int index = get_index(j, i);
+            newVec[index] = this->gridVector[index];
+        }
+    }
+    this->height = newHeight;
+    this->width = newWidth;
+    this->gridVector = newVec;
 
+}
 
 /**
  * Grid::get_index(x, y)
@@ -297,7 +311,10 @@ unsigned int Grid::get_dead_cells() const {
  * @return
  *      The 1d offset from the start of the data array where the desired cell is located.
  */
-
+unsigned int Grid::get_index(unsigned int x, unsigned int y) const {
+    unsigned int index = this->width * y + x;
+    return index;
+}
 
 /**
  * Grid::get(x, y)
@@ -327,6 +344,9 @@ unsigned int Grid::get_dead_cells() const {
  * @throws
  *      std::exception or sub-class if x,y is not a valid coordinate within the grid.
  */
+Cell Grid::get(unsigned int x, unsigned int y) const {
+    return this->operator()(x,y);
+}
 
 
 /**
@@ -356,7 +376,9 @@ unsigned int Grid::get_dead_cells() const {
  * @throws
  *      std::exception or sub-class if x,y is not a valid coordinate within the grid.
  */
-
+void Grid::set(unsigned int x, unsigned int y, Cell cell) {
+    this->operator()(x, y) = cell;
+}
 
 /**
  * Grid::operator()(x, y)
@@ -393,7 +415,9 @@ unsigned int Grid::get_dead_cells() const {
  * @throws
  *      std::runtime_error or sub-class if x,y is not a valid coordinate within the grid.
  */
-
+Cell& Grid::operator()(unsigned int x, unsigned int y){
+    return this->gridVector[get_index(x, y)];
+}
 
 /**
  * Grid::operator()(x, y)
@@ -425,7 +449,9 @@ unsigned int Grid::get_dead_cells() const {
  * @throws
  *      std::exception or sub-class if x,y is not a valid coordinate within the grid.
  */
-
+Cell Grid::operator()(unsigned int x, unsigned int y) const {
+    return this->gridVector[get_index(x, y)];
+}
 
 /**
  * Grid::crop(x0, y0, x1, y1)
