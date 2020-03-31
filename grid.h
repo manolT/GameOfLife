@@ -56,7 +56,7 @@ class Grid {
         Cell operator()(unsigned int x, unsigned int y) const;
         Cell& operator()(unsigned int x, unsigned int y);
         Grid crop(unsigned int x0, unsigned int y0, unsigned int x1, unsigned int y1) const;
-        void merge(const Grid other, unsigned int x0, unsigned int y0, bool alive_only);
+        void merge(const Grid other, unsigned int x0, unsigned int y0, bool alive_only = false);
 
 
 

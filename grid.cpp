@@ -193,7 +193,7 @@ unsigned int Grid::get_total_cells() const {
  */
 unsigned int Grid::get_alive_cells() const {
     unsigned int alive_counter = 0;
-    for (int i = 0; i < (this->height * this->width); i++) {
+    for (unsigned int i = 0; i < (this->height * this->width); i++) {
         if (gridVector[i] == Cell::ALIVE) {
             alive_counter++;
         }
@@ -227,7 +227,7 @@ unsigned int Grid::get_alive_cells() const {
  */
 unsigned int Grid::get_dead_cells() const {
     unsigned int dead_counter = 0;
-    for (int i = 0; i < this->height * this->width; i++) {
+    for (unsigned int i = 0; i < this->height * this->width; i++) {
         if (gridVector[i] == Cell::DEAD) {
             dead_counter++;
         }
@@ -283,8 +283,8 @@ void Grid::resize(unsigned int newWidth, unsigned int newHeight) {
     std::vector<Cell> newVec(newWidth * newHeight, Cell::DEAD);
     
     
-    for (int i = 0; i < this->height && i < newHeight; i++) {
-        for (int j = 0; j < this->width && j < newWidth; j++) {
+    for (unsigned int i = 0; i < this->height && i < newHeight; i++) {
+        for (unsigned int j = 0; j < this->width && j < newWidth; j++) {
             newVec[get_index_new_grid(j,i,newWidth)] = this->gridVector[get_index(j, i)];
         }
     }
@@ -545,13 +545,15 @@ Grid Grid::crop(unsigned int x0, unsigned int y0, unsigned int x1, unsigned int 
  * @throws
  *      std::exception or sub-class if the other grid being placed does not fit within the bounds of the current grid.
  */
-void Grid::merge(const Grid other, unsigned int x0, unsigned int y0, bool alive_only = false) {
-    for (int y = y0; y < width && y < y0 + other.get_width(); y++) {
-        for (int x = x0; x < height && x < x0 + other.get_width(), x++) {
+void Grid::merge(const Grid other, unsigned int x0, unsigned int y0, bool alive_only) {
+    for (unsigned int y = y0; y < width && y < y0 + other.get_width(); y++) {
+        for (unsigned int x = x0; x < height && x < x0 + other.get_height(); x++) {
             if (other(x - x0, y - y0) == Cell::ALIVE && alive_only) {
-                this->get(x, y) = Cell::ALIVE;
+                this->set(x, y, Cell::ALIVE);
             }
-            else {
+            else if(alive_only && this->get(x, y) == Cell::ALIVE){
+                this->set(x - x0, y - y0, Cell::ALIVE);
+            } else {
                 this->set(x, y, other(x - x0, y - y0));
             }
         }
