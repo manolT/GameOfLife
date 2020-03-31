@@ -284,9 +284,9 @@ void Grid::resize(unsigned int newWidth, unsigned int newHeight) {
     
     
     for (int i = 0; i < this->height && i < newHeight; i++) {
-        for (int j = 0; j < this->width && j < newWidth; i++) {
+        for (int j = 0; j < this->width && j < newWidth; j++) {
             unsigned int index = get_index(j, i);
-            newVec[index] = this->gridVector[index];
+            newVec[newWidth*i + j] = this->gridVector[index];
         }
     }
     this->height = newHeight;
@@ -312,6 +312,7 @@ void Grid::resize(unsigned int newWidth, unsigned int newHeight) {
  *      The 1d offset from the start of the data array where the desired cell is located.
  */
 unsigned int Grid::get_index(unsigned int x, unsigned int y) const {
+    //std::cout << "index" << std::endl;
     unsigned int index = this->width * y + x;
     return index;
 }
@@ -345,6 +346,7 @@ unsigned int Grid::get_index(unsigned int x, unsigned int y) const {
  *      std::exception or sub-class if x,y is not a valid coordinate within the grid.
  */
 Cell Grid::get(unsigned int x, unsigned int y) const {
+    //std::cout << "get" << std::endl;
     return this->operator()(x,y);
 }
 
@@ -377,6 +379,7 @@ Cell Grid::get(unsigned int x, unsigned int y) const {
  *      std::exception or sub-class if x,y is not a valid coordinate within the grid.
  */
 void Grid::set(unsigned int x, unsigned int y, Cell cell) {
+    //std::cout << "set" << std::endl;
     this->operator()(x, y) = cell;
 }
 
@@ -416,6 +419,7 @@ void Grid::set(unsigned int x, unsigned int y, Cell cell) {
  *      std::runtime_error or sub-class if x,y is not a valid coordinate within the grid.
  */
 Cell& Grid::operator()(unsigned int x, unsigned int y){
+    //std::cout << "operator() Cell&" << std::endl;
     return this->gridVector[get_index(x, y)];
 }
 
@@ -450,6 +454,7 @@ Cell& Grid::operator()(unsigned int x, unsigned int y){
  *      std::exception or sub-class if x,y is not a valid coordinate within the grid.
  */
 Cell Grid::operator()(unsigned int x, unsigned int y) const {
+    //std::cout << "operator() Cell" << std::endl;
     return this->gridVector[get_index(x, y)];
 }
 
