@@ -8,10 +8,12 @@
  *
  * You are encouraged to use STL container types as an underlying storage mechanism for the grid cells.
  *
- * @author YOUR_STUDENT_NUMBER
+ * @author 966022
  * @date March, 2020
  */
 #include "grid.h"
+#include <vector>
+#include <iostream>
 
 // Include the minimal number of headers needed to support your implementation.
 // #include ...
@@ -29,6 +31,8 @@
  *
  */
 
+Grid::Grid() : Grid(0){
+}
 
 /**
  * Grid::Grid(square_size)
@@ -54,6 +58,10 @@
  *      The edge size to use for the width and height of the grid.
  */
 
+Grid::Grid(const unsigned int square_size) : Grid(square_size, square_size) {
+}
+
+
 
 /**
  * Grid::Grid(width, height)
@@ -71,7 +79,10 @@
  * @param height
  *      The height of the grid.
  */
-
+Grid::Grid(const unsigned int width, const unsigned int height) : height(height), width(width) {
+    std::vector<Cell> vec(width * height, Cell::DEAD);
+    this->gridVector = vec;
+}
 
 /**
  * Grid::get_width()
@@ -96,7 +107,9 @@
  * @return
  *      The width of the grid.
  */
-
+unsigned int Grid::get_width() const {
+    return this->width;
+}
 
 /**
  * Grid::get_height()
@@ -122,6 +135,11 @@
  *      The height of the grid.
  */
 
+unsigned int Grid::get_height() const {
+    std::cout << "height=" << this->height << std::endl;
+    return this->height;
+}
+
 
 /**
  * Grid::get_total_cells()
@@ -146,7 +164,11 @@
  * @return
  *      The number of total cells.
  */
-
+unsigned int Grid::get_total_cells() const {
+    unsigned int total_cells = this->height * this->width;
+    std::cout << "total_cells=" << total_cells << std::endl;
+    return total_cells;
+}
 
 /**
  * Grid::get_alive_cells()
@@ -171,6 +193,16 @@
  * @return
  *      The number of alive cells.
  */
+unsigned int Grid::get_alive_cells() const {
+    unsigned int alive_counter = 0;
+    for (int i = 0; i < (this->height * this->width); i++) {
+        if (gridVector[i] == Cell::ALIVE) {
+            alive_counter++;
+        }
+    }
+    std::cout << "alive_counter=" << alive_counter << std::endl;
+    return alive_counter;
+}
 
 
 /**
@@ -196,6 +228,16 @@
  * @return
  *      The number of dead cells.
  */
+unsigned int Grid::get_dead_cells() const {
+    unsigned int dead_counter = 0;
+    for (int i = 0; i < this->height * this->width; i++) {
+        if (gridVector[i] == Cell::DEAD) {
+            dead_counter++;
+        }
+    }
+    std::cout << "dead_counter=" << dead_counter << std::endl;
+    return dead_counter;
+}
 
 
 /**
