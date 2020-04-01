@@ -41,5 +41,8 @@ class World {
         const Grid& get_state() const;
         void resize(unsigned int square_size);
         void resize(unsigned int new_width, unsigned int new_height);
-        
+        void step(bool torodial = false);
+        void advance(unsigned int steps, bool turodial = false);
+
+
 };

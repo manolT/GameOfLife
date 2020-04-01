@@ -22,6 +22,7 @@
  * @date March, 2020
  */
 #include "world.h"
+#include <algorithm>
 
 // Include the minimal number of headers needed to support your implementation.
 // #include ...
@@ -397,7 +398,7 @@ unsigned int World::count_neighbours(unsigned int x, unsigned int y, bool torodi
 
     unsigned int counter = 0;
     for (int j = y_minus; j <= y_plus; j++) {
-        for (int i = x_minus; i < x_plus; i++) {
+        for (int i = x_minus; i <= x_plus; i++) {
             if (this->currGrid(i, j) == Cell::ALIVE) {
                 counter++;
             }
@@ -433,6 +434,26 @@ unsigned int World::count_neighbours(unsigned int x, unsigned int y, bool torodi
  *      Optional parameter. If true then the step will consider the grid as a torus, where the left edge
  *      wraps to the right edge and the top to the bottom. Defaults to false.
  */
+void World::step(bool torodial) {
+    for (int y = 0; y < this->get_height(); y++) {
+        for (int x = 0; x < this->get_height(); x++) {
+            int neighbours = this->count_neighbours(x, y, torodial);
+            if (currGrid(x, y) == Cell::ALIVE) {
+                if (neighbours < 2 || neighbours > 3) {
+                    nextGrid(x, y) = Cell::DEAD;
+                }
+                else if (neighbours == 2 || neighbours == 3) {
+                    nextGrid(x, y) = Cell::ALIVE;
+                }
+            }
+            else if (neighbours == 3) {
+                nextGrid(x, y) = Cell::ALIVE;
+            }
+        }
+    }
+
+    std::swap(currGrid, nextGrid);
+}
 
 
 /**
@@ -448,3 +469,8 @@ unsigned int World::count_neighbours(unsigned int x, unsigned int y, bool torodi
  *      Optional parameter. If true then the step will consider the grid as a torus, where the left edge
  *      wraps to the right edge and the top to the bottom. Defaults to false.
  */
+void World::advance(unsigned int steps, bool turodial) {
+    for (int i = 0; i < steps; i++) {
+        this->step(turodial);
+    }
+}
