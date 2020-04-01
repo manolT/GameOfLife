@@ -17,9 +17,6 @@
  * Declare the interface of the Zoo namespace for constructing lifeforms and saving and loading them from file.
  */
 namespace Zoo {
-    private:
-
-    public:
         Grid glider();
-
+        Grid r_pentomino();
 };

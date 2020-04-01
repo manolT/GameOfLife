@@ -77,7 +77,15 @@ Grid Zoo::glider() {
  * @return
  *      Returns a Grid containing a r-pentomino.
  */
-
+Grid Zoo::r_pentomino() {
+    Grid grid = Grid(3);
+    Grid(1, 0) = Cell::ALIVE;
+    Grid(2, 0) = Cell::ALIVE;
+    Grid(0, 1) = Cell::ALIVE;
+    Grid(1, 1) = Cell::ALIVE;
+    Grid(1, 2) = Cell::ALIVE;
+    return grid;
+}
 
 /**
  * Zoo::light_weight_spaceship()
