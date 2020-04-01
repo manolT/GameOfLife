@@ -46,6 +46,15 @@
  * @return
  *      Returns a Grid containing a glider.
  */
+Grid Zoo::glider() {
+    Grid grid = Grid(3);
+    Grid(1, 0) = Cell::ALIVE;
+    Grid(2, 1) = Cell::ALIVE;
+    Grid(0, 2) = Cell::ALIVE;
+    Grid(1, 2) = Cell::ALIVE;
+    Grid(2, 2) = Cell::ALIVE;
+    return grid;
+}
 
 
 /**

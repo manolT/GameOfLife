@@ -23,6 +23,7 @@
  */
 #include "world.h"
 #include <algorithm>
+//TODO remove counts
 #include <iostream>
 
 // Include the minimal number of headers needed to support your implementation.
@@ -470,7 +471,7 @@ void World::step(bool torodial) {
 
     std::swap(currGrid, nextGrid);
 
-    std::cout << "Current grid:" << std::endl << currGrid << std::endl << "Prev grid:" << std::endl << nextGrid << std::endl;
+    //std::cout << "Current grid:" << std::endl << currGrid << std::endl << "Prev grid:" << std::endl << nextGrid << std::endl;
 }
 
 

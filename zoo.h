@@ -5,11 +5,11 @@
  * The test suites provide granular BDD style (Behaviour Driven Development) test cases
  * which will help further understand the specification you need to code to.
  *
- * @author YOUR_STUDENT_NUMBER
+ * @author 966022
  * @date March, 2020
  */
 #pragma once
-
+#include "grid.h";
 // Add the minimal number of includes you need in order to declare the namespace.
 // #include ...
 
@@ -17,8 +17,9 @@
  * Declare the interface of the Zoo namespace for constructing lifeforms and saving and loading them from file.
  */
 namespace Zoo {
-    // How to draw an owl:
-    //      Step 1. Draw a circle.
-    //      Step 2. Draw the rest of the owl.
+    private:
+
+    public:
+        Grid glider();
 
 };
