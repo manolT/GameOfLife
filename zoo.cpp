@@ -24,6 +24,7 @@
 #include "zoo.h"
 #include <fstream>
 #include <string>
+#include <iostream>
 
 // Include the minimal number of headers needed to support your implementation.
 // #include ...
@@ -276,7 +277,46 @@ void Zoo::save_ascii(std::string path, Grid grid) {
  *          - The file cannot be opened.
  *          - The file ends unexpectedly.
  */
+Grid Zoo::load_binary(std::string path) {
+    std::ifstream ifs;
+    ifs.open(path, std::ios::binary | std::ios::in);
+    //throw if unopened
+    const unsigned int sizeOfInt = 4;
+    int height;
+    ifs.read(reinterpret_cast<char *>(&height), sizeOfInt);
+    std::cout << height << std::endl;
+    int width;
+    ifs.read(reinterpret_cast<char*>(&width), sizeOfInt);
+    std::cout << width << std::endl;
+    unsigned int bytesHolder;
+    //calculate how many time we need to read from the file
+    int loops = (width * height) / (8 * sizeOfInt);
+    if ((height * width) % (8 * sizeOfInt) != 0) {
+        loops++;
+    }
+    std::cout << loops << std::endl;
+    Grid grid = Grid(width, height);
+    for (int i = 0; i < loops; i++) {
+        ifs.read(reinterpret_cast<char*>(&bytesHolder), sizeOfInt );
+        std::cout << bytesHolder << std::endl;
+        for (int j = 0; j < sizeOfInt * 8; j++) {
+            unsigned int a = bytesHolder << 31 - j;
+            //std::cout << a << std::endl;
+            a = a >> 31;
+            //std::cout << a << std::endl;
+            if (a == 1) {
+                int x = ((i * sizeOfInt * 8) + j) % width;
+                std::cout << x << std::endl;
+                int y = ((i * sizeOfInt * 8) + j) / width;
+                std::cout << y << std::endl;
+                grid(x, y) = Cell::ALIVE;
+            }
+        }
 
+    }
+    std::cout << grid << std::endl;
+    return grid;
+}
 
 /**
  * Zoo::save_binary(path, grid)
