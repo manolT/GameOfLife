@@ -583,7 +583,14 @@ void Grid::merge(const Grid other, unsigned int x0, unsigned int y0, bool alive_
  *      Returns a copy of the grid that has been rotated.
  */
 Grid Grid::rotate(int rotation) const {
-    switch (rotation % 4) {
+    int realRotation = 0;
+    if (rotation < 0) {
+        realRotation = rotation % -4;
+    }
+    else {
+        realRotation = rotation % 4;
+    }
+    switch (realRotation) {
         case 0:
         {
             Grid newGrid = Grid(this->width, this->height);
@@ -595,17 +602,19 @@ Grid Grid::rotate(int rotation) const {
             return newGrid;
             break;
         }
+        case -3:
         case 1:
         {
             Grid newGrid = Grid(this->height, this->width);
             for (int y = 0; y < this->height; y++) {
                 for (int x = 0; x < this->width; x++) {
-                    newGrid(y, this->width - x - 1) = this->get(x, y);
+                    newGrid(this->height - y - 1, x) = this->get(x, y);
                 }
             }
             return newGrid;
             break;
         }
+        case -2:
         case 2:
         {
             Grid newGrid = Grid(this->width, this->height);
@@ -617,23 +626,22 @@ Grid Grid::rotate(int rotation) const {
             return newGrid;
             break;
         }
+        case -1:
         case 3:
         {
             Grid newGrid = Grid(this->height, this->width);
             for (int y = 0; y < this->height; y++) {
                 for (int x = 0; x < this->width; x++) {
-                    newGrid(this->height - y - 1, x) = this->get(x, y);
+                    newGrid(y, this->width - x - 1) = this->get(x, y);
                 }
             }
             return newGrid;
             break;
+            
         }
         default:
             return NULL;
     }
-
-
-
 
 }
 
