@@ -37,6 +37,8 @@
  *      World world;
  *
  */
+World::World() : World(0) {
+}
 
 
 /**
@@ -58,7 +60,8 @@
  * @param square_size
  *      The edge size to use for the width and height of the world.
  */
-
+World::World(unsigned int square_size) : World(square_size, square_size){
+}
 
 /**
  * World::World(width, height)
@@ -75,6 +78,10 @@
  * @param height
  *      The height of the world.
  */
+World::World(unsigned int width, unsigned int height) {
+    this->topGrid = Grid(width, height);
+    this->bottomGrid = Grid(width, height);
+}
 
 
 /**
@@ -96,6 +103,15 @@
  * @param initial_state
  *      The state of the constructed world.
  */
+World::World(const Grid initial_state) : World(initial_state.get_width(), initial_state.get_height()) {
+    for (int y = 0; y < initial_state.get_height(); y++) {
+        for (int x = 0; x < initial_state.get_width(); x++) {
+            this->topGrid(x, y) = initial_state(x, y);
+            this->bottomGrid(x, y) = initial_state(x, y);
+        }
+    }
+
+}
 
 
 /**
@@ -121,6 +137,9 @@
  * @return
  *      The width of the world.
  */
+unsigned int World::get_width() const{
+    return this->topGrid.get_width();
+}
 
 
 /**
@@ -146,7 +165,9 @@
  * @return
  *      The height of the world.
  */
-
+unsigned int World::get_height() const {
+    return this->topGrid.get_height();
+}
 
 /**
  * World::get_total_cells()
@@ -171,7 +192,9 @@
  * @return
  *      The number of total cells.
  */
-
+unsigned int World::get_total_cells() const {
+    return this->topGrid.get_height() * this->topGrid.get_width();
+}
 
 /**
  * World::get_alive_cells()
@@ -196,7 +219,9 @@
  * @return
  *      The number of alive cells.
  */
-
+unsigned int World::get_alive_cells() const {
+    return this->topGrid.get_alive_cells();
+}
 
 /**
  * World::get_dead_cells()
@@ -221,7 +246,9 @@
  * @return
  *      The number of dead cells.
  */
-
+unsigned int World::get_dead_cells() const {
+    return this->topGrid.get_dead_cells();
+}
 
 /**
  * World::get_state()

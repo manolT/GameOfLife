@@ -41,9 +41,10 @@ class Grid {
 
     public:
 
-        Grid(const unsigned int width, const unsigned int height);
+        
         Grid();
         Grid(const unsigned int square_size);
+        Grid(const unsigned int width, const unsigned int height);
         //const??
         unsigned int get_width() const;
         unsigned int get_height() const;
