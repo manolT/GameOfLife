@@ -1,12 +1,12 @@
 #include <iostream>
 #include "grid.h"
+#include "zoo.h"
 
 int main(int argc, char* argv[]) {
 
-	unsigned int b = 0;
-	unsigned int a = b << 31;
-	b = a >> 31;
-	std::cout << a << "//" << b << std::endl;
+	Grid grid = Zoo::glider();
+	std::cout << "what" << std::endl;
+	Zoo::save_binary("./out.bgol", grid);
 
 	return 0;
 }

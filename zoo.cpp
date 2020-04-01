@@ -319,7 +319,7 @@ Grid Zoo::load_binary(std::string path) {
         }
 
     }
-
+    ifs.close();
     return grid;
 }
 
@@ -353,10 +353,13 @@ Grid Zoo::load_binary(std::string path) {
  */
 void Zoo::save_binary(std::string path, Grid grid) {
     std::ofstream ofs(path, std::ios::out | std::ios::binary);
-    ofs.write((char*)grid.get_width(), 4);
-    ofs.write((char*)grid.get_height(), 4);
-    
+    const char* buffer = new char[4];
 
+    buffer = std::to_string(grid.get_width()).c_str();
+    ofs.write(buffer, 4);
+
+    buffer = std::to_string(grid.get_height()).c_str();
+    ofs.write(buffer, 4);
     //calculates how many 4 byte chunks we need to write
     int loops = (grid.get_width() * grid.get_height()) / 4;
     if ((grid.get_height() * grid.get_width()) % 4 != 0) {
@@ -370,16 +373,14 @@ void Zoo::save_binary(std::string path, Grid grid) {
     if (grid.get_width() == 0) {
         outOfBounds = true;
     }
-
-    unsigned int buffer = 0;
+    unsigned int bufferInt = 0;
     //each loop writes an int (4 bytes) to the file
     for (int i = 0; i < loops; i++) {
         //each loop populates a single int with proper values
         for (int j = 0; j < 8 && !outOfBounds; j++) {
             if (grid(x,y) == Cell::ALIVE && !outOfBounds) {
-                buffer += pow(2, j);
+                bufferInt += pow(2, j);
             }
-
             //control the grid pointer
             if (x == grid.get_width() - 1) {
                 if (y == grid.get_height() - 1) {
@@ -394,9 +395,12 @@ void Zoo::save_binary(std::string path, Grid grid) {
                 x++;
             }
         }
-        ofs.write((char*)buffer, 4);
-        buffer = 0;
+        buffer = std::to_string(bufferInt).c_str();
+        ofs.write(buffer, 4);
+        bufferInt = 0;
     }
-
+    std::cout << "what1" << std::endl;
+    //delete[] buffer;
+    ofs.close();
 
 }
