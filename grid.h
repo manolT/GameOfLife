@@ -10,6 +10,7 @@
  */
 #pragma once
 #include <vector>
+#include <iostream>
 
 // Add the minimal number of includes you need in order to declare the class.
 // #include ...
@@ -58,6 +59,9 @@ class Grid {
         Grid crop(unsigned int x0, unsigned int y0, unsigned int x1, unsigned int y1) const;
         void merge(const Grid other, unsigned int x0, unsigned int y0, bool alive_only = false);
         Grid rotate(int rotation) const;
+
+        friend std::ostream& operator<<(std::ostream& lhs, const Grid& rhs);
+
 
         
 
