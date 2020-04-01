@@ -247,7 +247,7 @@ void Zoo::save_ascii(std::string path, Grid grid) {
     ofs << grid.get_width() << ' ' << grid.get_height() << '\n';
     for (int y = 0; y < grid.get_height(); y++) {
         for (int x = 0; x < grid.get_width(); x++) {
-            ofs << grid(x, y);
+            ofs << (char)grid(x, y);
         }
         ofs << '\n';
     }
