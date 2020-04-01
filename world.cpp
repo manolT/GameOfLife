@@ -79,8 +79,8 @@ World::World(unsigned int square_size) : World(square_size, square_size){
  *      The height of the world.
  */
 World::World(unsigned int width, unsigned int height) {
-    this->topGrid = Grid(width, height);
-    this->bottomGrid = Grid(width, height);
+    this->currGrid = Grid(width, height);
+    this->nextGrid = Grid(width, height);
 }
 
 
@@ -106,8 +106,8 @@ World::World(unsigned int width, unsigned int height) {
 World::World(const Grid initial_state) : World(initial_state.get_width(), initial_state.get_height()) {
     for (int y = 0; y < initial_state.get_height(); y++) {
         for (int x = 0; x < initial_state.get_width(); x++) {
-            this->topGrid(x, y) = initial_state(x, y);
-            this->bottomGrid(x, y) = initial_state(x, y);
+            this->currGrid(x, y) = initial_state(x, y);
+            this->nextGrid(x, y) = initial_state(x, y);
         }
     }
 
@@ -138,7 +138,7 @@ World::World(const Grid initial_state) : World(initial_state.get_width(), initia
  *      The width of the world.
  */
 unsigned int World::get_width() const{
-    return this->topGrid.get_width();
+    return this->currGrid.get_width();
 }
 
 
@@ -166,7 +166,7 @@ unsigned int World::get_width() const{
  *      The height of the world.
  */
 unsigned int World::get_height() const {
-    return this->topGrid.get_height();
+    return this->currGrid.get_height();
 }
 
 /**
@@ -193,7 +193,7 @@ unsigned int World::get_height() const {
  *      The number of total cells.
  */
 unsigned int World::get_total_cells() const {
-    return this->topGrid.get_height() * this->topGrid.get_width();
+    return this->currGrid.get_height() * this->currGrid.get_width();
 }
 
 /**
@@ -220,7 +220,7 @@ unsigned int World::get_total_cells() const {
  *      The number of alive cells.
  */
 unsigned int World::get_alive_cells() const {
-    return this->topGrid.get_alive_cells();
+    return this->currGrid.get_alive_cells();
 }
 
 /**
@@ -247,7 +247,7 @@ unsigned int World::get_alive_cells() const {
  *      The number of dead cells.
  */
 unsigned int World::get_dead_cells() const {
-    return this->topGrid.get_dead_cells();
+    return this->currGrid.get_dead_cells();
 }
 
 /**
@@ -274,7 +274,9 @@ unsigned int World::get_dead_cells() const {
  * @return
  *      A reference to the current state.
  */
-
+const Grid& World::get_state() const{
+    return this->currGrid;
+}
 
 /**
  * World::resize(square_size)
@@ -295,7 +297,9 @@ unsigned int World::get_dead_cells() const {
  * @param square_size
  *      The new edge size for both the width and height of the grid.
  */
-
+void World::resize(unsigned int square_size) {
+    this->resize(square_size, square_size);
+}
 
 /**
  * World::resize(new_width, new_height)
@@ -319,7 +323,10 @@ unsigned int World::get_dead_cells() const {
  * @param new_height
  *      The new height for the grid.
  */
-
+void World::resize(unsigned int new_width, unsigned int new_height) {
+    this->currGrid.resize(new_width, new_height);
+    this->nextGrid = Grid(new_width, new_height);
+}
 
 /**
  * World::count_neighbours(x, y, toroidal)

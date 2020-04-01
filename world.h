@@ -22,8 +22,8 @@
  */
 class World {
     private:
-        Grid topGrid;
-        Grid bottomGrid;
+        Grid currGrid;
+        Grid nextGrid;
 
     public:
         World();
@@ -36,4 +36,8 @@ class World {
         unsigned int get_total_cells() const;
         unsigned int get_alive_cells() const;
         unsigned int get_dead_cells() const;
+        const Grid& get_state() const;
+        void resize(unsigned int square_size);
+        void resize(unsigned int new_width, unsigned int new_height);
+
 };
