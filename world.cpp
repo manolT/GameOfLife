@@ -23,6 +23,7 @@
  */
 #include "world.h"
 #include <algorithm>
+#include <iostream>
 
 // Include the minimal number of headers needed to support your implementation.
 // #include ...
@@ -365,7 +366,7 @@ unsigned int World::count_neighbours(unsigned int x, unsigned int y, bool torodi
     int x_plus = x + 1;
     int y_minus = y - 1;
     int y_plus = y + 1;
-    
+    unsigned int counter = 0;
     if(torodial){
         if (x_minus == -1) {
             x_minus = this->get_width() - 1;
@@ -378,6 +379,16 @@ unsigned int World::count_neighbours(unsigned int x, unsigned int y, bool torodi
         }
         else if (y_plus == this->get_height()) {
             y_plus = 0;
+        }
+        int arraySize = 3;
+        unsigned int setX[arraySize] = {x_minus, x, x_plus};
+        unsigned int setY[arraySize] = { y_minus, y, y_plus};
+        for (int i = 0; i < arraySize; i++) {
+            for (int j = 0; j < arraySize; j++) {
+                if (this->currGrid(setX[j], setY[i]) == Cell::ALIVE) {
+                    counter++;
+                }
+            }
         }
 
     }
@@ -394,20 +405,21 @@ unsigned int World::count_neighbours(unsigned int x, unsigned int y, bool torodi
         else if (y_plus == this->get_height()) {
             y_plus--;
         }
-    }
-
-    unsigned int counter = 0;
-    for (int j = y_minus; j <= y_plus; j++) {
-        for (int i = x_minus; i <= x_plus; i++) {
-            if (this->currGrid(i, j) == Cell::ALIVE) {
-                counter++;
+        for (int j = y_minus; j <= y_plus; j++) {
+            for (int i = x_minus; i <= x_plus; i++) {
+                if (this->currGrid(i, j) == Cell::ALIVE) {
+                    counter++;
+                }
             }
         }
+        
     }
-
     if (this->currGrid(x, y) == Cell::ALIVE) {
         counter--;
     }
+    
+
+    
 
     return counter;
 }
@@ -435,6 +447,7 @@ unsigned int World::count_neighbours(unsigned int x, unsigned int y, bool torodi
  *      wraps to the right edge and the top to the bottom. Defaults to false.
  */
 void World::step(bool torodial) {
+
     for (int y = 0; y < this->get_height(); y++) {
         for (int x = 0; x < this->get_height(); x++) {
             int neighbours = this->count_neighbours(x, y, torodial);
@@ -449,10 +462,15 @@ void World::step(bool torodial) {
             else if (neighbours == 3) {
                 nextGrid(x, y) = Cell::ALIVE;
             }
+            else {
+                nextGrid(x, y) = Cell::DEAD;
+            }
         }
     }
 
     std::swap(currGrid, nextGrid);
+
+    std::cout << "Current grid:" << std::endl << currGrid << std::endl << "Prev grid:" << std::endl << nextGrid << std::endl;
 }
 
 
@@ -469,8 +487,8 @@ void World::step(bool torodial) {
  *      Optional parameter. If true then the step will consider the grid as a torus, where the left edge
  *      wraps to the right edge and the top to the bottom. Defaults to false.
  */
-void World::advance(unsigned int steps, bool turodial) {
+void World::advance(unsigned int steps, bool torodial) {
     for (int i = 0; i < steps; i++) {
-        this->step(turodial);
+        this->step(torodial);
     }
 }

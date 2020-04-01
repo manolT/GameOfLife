@@ -42,7 +42,7 @@ class World {
         void resize(unsigned int square_size);
         void resize(unsigned int new_width, unsigned int new_height);
         void step(bool torodial = false);
-        void advance(unsigned int steps, bool turodial = false);
+        void advance(unsigned int steps, bool torodial = false);
 
 
 };
