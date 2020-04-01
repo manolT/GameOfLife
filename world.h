@@ -25,6 +25,8 @@ class World {
         Grid currGrid;
         Grid nextGrid;
 
+        unsigned int count_neighbours(unsigned int x, unsigned int y, bool torodial) const;
+
     public:
         World();
         World(unsigned int square_size);
@@ -39,5 +41,5 @@ class World {
         const Grid& get_state() const;
         void resize(unsigned int square_size);
         void resize(unsigned int new_width, unsigned int new_height);
-
+        
 };

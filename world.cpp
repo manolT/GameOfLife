@@ -359,6 +359,58 @@ void World::resize(unsigned int new_width, unsigned int new_height) {
  * @return
  *      Returns the number of alive neighbours.
  */
+unsigned int World::count_neighbours(unsigned int x, unsigned int y, bool torodial) const {
+    int x_minus = x - 1;
+    int x_plus = x + 1;
+    int y_minus = y - 1;
+    int y_plus = y + 1;
+    
+    if(torodial){
+        if (x_minus == -1) {
+            x_minus = this->get_width() - 1;
+        } 
+        else if (x_plus == this->get_width()) {
+            x_plus = 0;
+        }
+        if (y_minus == -1) {
+            y_minus = this->get_height() - 1;
+        }
+        else if (y_plus == this->get_height()) {
+            y_plus = 0;
+        }
+
+    }
+    else {
+        if (x_minus == -1) {
+            x_minus++;
+        }
+        else if (x_plus == this->get_width()) {
+            x_plus--;
+        }
+        if (y_minus == -1) {
+            y_minus++;
+        }
+        else if (y_plus == this->get_height()) {
+            y_plus--;
+        }
+    }
+
+    unsigned int counter = 0;
+    for (int j = y_minus; j <= y_plus; j++) {
+        for (int i = x_minus; i < x_plus; i++) {
+            if (this->currGrid(i, j) == Cell::ALIVE) {
+                counter++;
+            }
+        }
+    }
+
+    if (this->currGrid(x, y) == Cell::ALIVE) {
+        counter--;
+    }
+
+    return counter;
+}
+
 
 
 /**
