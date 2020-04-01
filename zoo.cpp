@@ -25,6 +25,7 @@
 #include <fstream>
 #include <string>
 #include <iostream>
+#include <math.h>
 
 // Include the minimal number of headers needed to support your implementation.
 // #include ...
@@ -281,40 +282,44 @@ Grid Zoo::load_binary(std::string path) {
     std::ifstream ifs;
     ifs.open(path, std::ios::binary | std::ios::in);
     //throw if unopened
+
     const unsigned int sizeOfInt = 4;
+    const unsigned int bitsInt = 8 * sizeOfInt;
+
     int height;
     ifs.read(reinterpret_cast<char *>(&height), sizeOfInt);
-    std::cout << height << std::endl;
     int width;
     ifs.read(reinterpret_cast<char*>(&width), sizeOfInt);
-    std::cout << width << std::endl;
+    
     unsigned int bytesHolder;
-    //calculate how many time we need to read from the file
-    int loops = (width * height) / (8 * sizeOfInt);
-    if ((height * width) % (8 * sizeOfInt) != 0) {
+
+    Grid grid = Grid(width, height);
+
+    //calculate how many ints we need to read from the file
+    int loops = (width * height) / bitsInt;
+    if ((height * width) % bitsInt != 0) {
         loops++;
     }
-    std::cout << loops << std::endl;
-    Grid grid = Grid(width, height);
+    
+    //each loop reads one int (4 bytes) from the file
     for (int i = 0; i < loops; i++) {
-        ifs.read(reinterpret_cast<char*>(&bytesHolder), sizeOfInt );
-        std::cout << bytesHolder << std::endl;
+        ifs.read(reinterpret_cast<char*>(&bytesHolder), sizeOfInt);
+
         for (int j = 0; j < sizeOfInt * 8; j++) {
-            unsigned int a = bytesHolder << 31 - j;
-            //std::cout << a << std::endl;
-            a = a >> 31;
-            //std::cout << a << std::endl;
+            //isolating the rightmost bit in the int and then the next to the left
+            unsigned int a = bytesHolder << (bitsInt - 1 - j);
+            a = a >> (bitsInt - 1);
             if (a == 1) {
+                //calculating the x and y coordinates based on which element we are at
                 int x = ((i * sizeOfInt * 8) + j) % width;
-                std::cout << x << std::endl;
                 int y = ((i * sizeOfInt * 8) + j) / width;
-                std::cout << y << std::endl;
+
                 grid(x, y) = Cell::ALIVE;
             }
         }
 
     }
-    std::cout << grid << std::endl;
+
     return grid;
 }
 
@@ -346,4 +351,52 @@ Grid Zoo::load_binary(std::string path) {
  * @throws
  *      Throws std::runtime_error or sub-class if the file cannot be opened.
  */
+void Zoo::save_binary(std::string path, Grid grid) {
+    std::ofstream ofs(path, std::ios::out | std::ios::binary);
+    ofs.write((char*)grid.get_width(), 4);
+    ofs.write((char*)grid.get_height(), 4);
+    
 
+    //calculates how many 4 byte chunks we need to write
+    int loops = (grid.get_width() * grid.get_height()) / 4;
+    if ((grid.get_height() * grid.get_width()) % 4 != 0) {
+        loops++;
+    }
+
+    //grid coordinates and out of bound control
+    int x = 0;
+    int y = 0;
+    bool outOfBounds = false;
+    if (grid.get_width() == 0) {
+        outOfBounds = true;
+    }
+
+    unsigned int buffer = 0;
+    //each loop writes an int (4 bytes) to the file
+    for (int i = 0; i < loops; i++) {
+        //each loop populates a single int with proper values
+        for (int j = 0; j < 8 && !outOfBounds; j++) {
+            if (grid(x,y) == Cell::ALIVE && !outOfBounds) {
+                buffer += pow(2, j);
+            }
+
+            //control the grid pointer
+            if (x == grid.get_width() - 1) {
+                if (y == grid.get_height() - 1) {
+                    outOfBounds = true;
+                }
+                else {
+                    y++;
+                    x = 0;
+                }
+            }
+            else {
+                x++;
+            }
+        }
+        ofs.write((char*)buffer, 4);
+        buffer = 0;
+    }
+
+
+}

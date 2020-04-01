@@ -24,5 +24,6 @@ namespace Zoo {
         Grid load_ascii(std::string path);
         void save_ascii(std::string path, Grid grid);
         Grid load_binary(std::string path);
+        void save_binary(std::string path, Grid grid);
 
 };
