@@ -19,4 +19,5 @@
 namespace Zoo {
         Grid glider();
         Grid r_pentomino();
+        Grid light_weight_spaceship();
 };
