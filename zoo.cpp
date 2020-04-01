@@ -18,10 +18,12 @@
  *                padded with zero or more 0 bits.
  *              - a 0 bit should be considered Cell::DEAD, a 1 bit should be considered Cell::ALIVE.
  *
- * @author YOUR_STUDENT_NUMBER
+ * @author 966022
  * @date March, 2020
  */
 #include "zoo.h"
+#include <fstream>
+#include <string>
 
 // Include the minimal number of headers needed to support your implementation.
 // #include ...
@@ -147,6 +149,71 @@ Grid Zoo::light_weight_spaceship() {
  *          - Newline characters are not found when expected during parsing.
  *          - The character for a cell is not the ALIVE or DEAD character.
  */
+Grid Zoo::load_ascii(std::string path) {
+    std::ifstream ifs(path, std::ifstream::in);
+    //throw file not found
+
+    //read width, including multiple digit width
+    char inC = ifs.get();
+    std::string intermediateS = "";
+    while (inC != ' ') {
+        intermediateS += inC;
+        inC = ifs.get();
+    }
+    unsigned int width = 0;
+    try {
+       width = std::stoi(intermediateS);
+    }
+    catch (std::invalid_argument const &e) {
+        //TODO
+    } 
+    catch (std::out_of_range const& e) {
+        //TODO
+    }
+
+    //read height
+    intermediateS = "";
+    while (inC != '\n') {
+        intermediateS += inC;
+        inC = ifs.get();
+    }
+    unsigned int height = 0;
+    try {
+        height = std::stoi(intermediateS);
+    }
+    catch (std::invalid_argument const& e) {
+        //TODO
+    }
+    catch (std::out_of_range const& e) {
+        //TODO
+    }
+
+    Grid grid = Grid(width, height);
+
+    for (int y = 0; y < height; y++) {
+        for (int x = 0; x < width; x++) {
+            inC = ifs.get();
+            if (inC == '#') {
+                grid(x, y) = Cell::ALIVE;
+            }
+            else if (inC == ' ') {
+                grid(x, y) = Cell::DEAD;
+            }
+            else {
+                //TODO throw formatting error
+            }
+        }
+        inC = ifs.get();
+        //allows for last new line to not be there
+        if (inC != '\n' && y != height-1) {
+            //TODO throw 
+        }
+    }
+
+    return grid;
+}
+
+
 
 
 /**

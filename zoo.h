@@ -9,7 +9,8 @@
  * @date March, 2020
  */
 #pragma once
-#include "grid.h";
+#include "grid.h"
+#include <string>
 // Add the minimal number of includes you need in order to declare the namespace.
 // #include ...
 
@@ -20,4 +21,5 @@ namespace Zoo {
         Grid glider();
         Grid r_pentomino();
         Grid light_weight_spaceship();
+        Grid load_ascii(std::string path);
 };
