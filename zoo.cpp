@@ -27,9 +27,6 @@
 #include <iostream>
 #include <math.h>
 
-// Include the minimal number of headers needed to support your implementation.
-// #include ...
-
 /**
  * Zoo::glider()
  *
@@ -154,6 +151,9 @@ Grid Zoo::light_weight_spaceship() {
 Grid Zoo::load_ascii(std::string path) {
     std::ifstream ifs(path, std::ifstream::in);
     //throw file not found
+    if (!ifs.is_open()) {
+        throw std::runtime_error("load_ascii() : File cannot be opened.");
+    }
 
     //read width, including multiple digit width
     char inC = ifs.get();
@@ -167,10 +167,10 @@ Grid Zoo::load_ascii(std::string path) {
        width = std::stoi(intermediateS);
     }
     catch (std::invalid_argument const &e) {
-        //TODO
+        throw std::runtime_error("load_ascii() : Cannot parse width, invalid input argument.");
     } 
     catch (std::out_of_range const& e) {
-        //TODO
+        throw std::runtime_error("load_ascii() : Cannot parse width, out of range.");
     }
 
     //read height
@@ -184,10 +184,10 @@ Grid Zoo::load_ascii(std::string path) {
         height = std::stoi(intermediateS);
     }
     catch (std::invalid_argument const& e) {
-        //TODO
+        throw std::runtime_error("load_ascii() : Cannot parse height, invalid input argument.");
     }
     catch (std::out_of_range const& e) {
-        //TODO
+        throw std::runtime_error("load_ascii() : Cannot parse height, out of range.");
     }
 
     Grid grid = Grid(width, height);
@@ -202,13 +202,13 @@ Grid Zoo::load_ascii(std::string path) {
                 grid(x, y) = Cell::DEAD;
             }
             else {
-                //TODO throw formatting error
+                throw std::runtime_error("load_ascii() : Character for a cell is incorrect.");
             }
         }
         inC = ifs.get();
         //allows for last new line to not be there
         if (inC != '\n' && y != height-1) {
-            //TODO throw 
+            throw std::runtime_error("load_ascii() : Missing new line character when expected.");
         }
     }
 

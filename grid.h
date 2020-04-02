@@ -38,6 +38,7 @@ class Grid {
 
         unsigned int get_index(unsigned int x, unsigned int y) const;
         unsigned int get_index_new_grid(unsigned int x, unsigned int y, unsigned int newWidth) const;
+        bool are_valid_coordinates(unsigned int x, unsigned int y) const;
 
     public:
 
