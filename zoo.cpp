@@ -150,7 +150,7 @@ Grid Zoo::light_weight_spaceship() {
  */
 Grid Zoo::load_ascii(std::string path) {
     std::ifstream ifs(path, std::ifstream::in);
-    //throw file not found
+
     if (!ifs.is_open()) {
         throw std::runtime_error("load_ascii() : File cannot be opened.");
     }
@@ -245,7 +245,10 @@ Grid Zoo::load_ascii(std::string path) {
  */
 void Zoo::save_ascii(std::string path, Grid grid) {
     std::ofstream ofs(path, std::ofstream::out);
-    //throw exception
+    if (!ofs.is_open()) {
+        throw std::runtime_error("save_ascii() : File cannot be opened.");
+    }
+
     ofs << grid.get_width() << ' ' << grid.get_height() << '\n';
     for (int y = 0; y < grid.get_height(); y++) {
         for (int x = 0; x < grid.get_width(); x++) {
