@@ -562,7 +562,7 @@ Grid Grid::crop(unsigned int x0, unsigned int y0, unsigned int x1, unsigned int 
  */
 void Grid::merge(const Grid other, unsigned int x0, unsigned int y0, bool alive_only) {
 
-    if (other.get_width() + x0 > this->width || this->get_height() + y0 > this->height 
+    if (other.get_width() + x0 > this->width || other.get_height() + y0 > this->height 
         || !are_valid_coordinates(x0,y0)) {
         throw std::invalid_argument("merge() : The other grid does not fit in this grid.");
     }
