@@ -57,6 +57,7 @@ Grid Zoo::glider() {
     Grid(0, 2) = Cell::ALIVE;
     Grid(1, 2) = Cell::ALIVE;
     Grid(2, 2) = Cell::ALIVE;
+    std::cout << grid << std::endl;
     return grid;
 }
 
@@ -352,17 +353,18 @@ Grid Zoo::load_binary(std::string path) {
  *      Throws std::runtime_error or sub-class if the file cannot be opened.
  */
 void Zoo::save_binary(std::string path, Grid grid) {
-    std::ofstream ofs(path, std::ios::out | std::ios::binary);
-    const char* buffer = new char[4];
+    std::ofstream ofs(path, std::ios::binary);
+    
 
-    buffer = std::to_string(grid.get_width()).c_str();
-    ofs.write(buffer, 4);
+    int width = grid.get_width();
+    int height = grid.get_height();
 
-    buffer = std::to_string(grid.get_height()).c_str();
-    ofs.write(buffer, 4);
+    ofs.write((char*)&width, sizeof(int));
+    ofs.write((char*)&height, sizeof(int));
+
     //calculates how many 4 byte chunks we need to write
-    int loops = (grid.get_width() * grid.get_height()) / 4;
-    if ((grid.get_height() * grid.get_width()) % 4 != 0) {
+    int loops = (grid.get_width() * grid.get_height()) / 32;
+    if ((grid.get_height() * grid.get_width()) % 32 != 0) {
         loops++;
     }
 
@@ -377,10 +379,11 @@ void Zoo::save_binary(std::string path, Grid grid) {
     //each loop writes an int (4 bytes) to the file
     for (int i = 0; i < loops; i++) {
         //each loop populates a single int with proper values
-        for (int j = 0; j < 8 && !outOfBounds; j++) {
+        for (int j = 0; j < 32 && !outOfBounds; j++) {
             if (grid(x,y) == Cell::ALIVE && !outOfBounds) {
                 bufferInt += pow(2, j);
             }
+            std::cout << "x:" << x << "  y:" << y << std::endl;
             //control the grid pointer
             if (x == grid.get_width() - 1) {
                 if (y == grid.get_height() - 1) {
@@ -395,12 +398,10 @@ void Zoo::save_binary(std::string path, Grid grid) {
                 x++;
             }
         }
-        buffer = std::to_string(bufferInt).c_str();
-        ofs.write(buffer, 4);
+        ofs.write((char*)&bufferInt, 4);
         bufferInt = 0;
     }
-    std::cout << "what1" << std::endl;
-    //delete[] buffer;
+
     ofs.close();
 
 }
