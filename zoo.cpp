@@ -284,7 +284,9 @@ void Zoo::save_ascii(std::string path, Grid grid) {
 Grid Zoo::load_binary(std::string path) {
     std::ifstream ifs;
     ifs.open(path, std::ios::binary | std::ios::in);
-    //throw if unopened
+    if (!ifs.is_open()) {
+        throw std::runtime_error("load_binary() : File cannot be opened.");
+    }
 
     const unsigned int sizeOfInt = 4;
     const unsigned int bitsInt = 8 * sizeOfInt;
@@ -306,8 +308,12 @@ Grid Zoo::load_binary(std::string path) {
     
     //each loop reads one int (4 bytes) from the file
     for (int i = 0; i < loops; i++) {
-        ifs.read(reinterpret_cast<char*>(&bytesHolder), sizeOfInt);
 
+        if (ifs.eof()) {
+            throw std::runtime_error("load_binary() : Unexpected end of file.");
+        }
+
+        ifs.read(reinterpret_cast<char*>(&bytesHolder), sizeOfInt);
         for (int j = 0; j < sizeOfInt * 8; j++) {
             //isolating the rightmost bit in the int and then the next to the left
             unsigned int a = bytesHolder << (bitsInt - 1 - j);
