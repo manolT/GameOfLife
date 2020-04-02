@@ -52,12 +52,11 @@
  */
 Grid Zoo::glider() {
     Grid grid = Grid(3);
-    Grid(1, 0) = Cell::ALIVE;
-    Grid(2, 1) = Cell::ALIVE;
-    Grid(0, 2) = Cell::ALIVE;
-    Grid(1, 2) = Cell::ALIVE;
-    Grid(2, 2) = Cell::ALIVE;
-    std::cout << grid << std::endl;
+    grid(1, 0) = Cell::ALIVE;
+    grid(2, 1) = Cell::ALIVE;
+    grid(0, 2) = Cell::ALIVE;
+    grid(1, 2) = Cell::ALIVE;
+    grid(2, 2) = Cell::ALIVE;
     return grid;
 }
 
@@ -84,11 +83,11 @@ Grid Zoo::glider() {
  */
 Grid Zoo::r_pentomino() {
     Grid grid = Grid(3);
-    Grid(1, 0) = Cell::ALIVE;
-    Grid(2, 0) = Cell::ALIVE;
-    Grid(0, 1) = Cell::ALIVE;
-    Grid(1, 1) = Cell::ALIVE;
-    Grid(1, 2) = Cell::ALIVE;
+    grid(1, 0) = Cell::ALIVE;
+    grid(2, 0) = Cell::ALIVE;
+    grid(0, 1) = Cell::ALIVE;
+    grid(1, 1) = Cell::ALIVE;
+    grid(1, 2) = Cell::ALIVE;
     return grid;
 }
 
@@ -114,16 +113,16 @@ Grid Zoo::r_pentomino() {
  *      Returns a grid containing a light weight spaceship.
  */
 Grid Zoo::light_weight_spaceship() {
-    Grid grid = Grid(4);
-    Grid(1, 0) = Cell::ALIVE;
-    Grid(3, 0) = Cell::ALIVE;
-    Grid(0, 1) = Cell::ALIVE;
-    Grid(0, 2) = Cell::ALIVE;
-    Grid(3, 2) = Cell::ALIVE;
-    Grid(0, 3) = Cell::ALIVE;
-    Grid(1, 3) = Cell::ALIVE;
-    Grid(2, 3) = Cell::ALIVE;
-    Grid(3, 3) = Cell::ALIVE;
+    Grid grid = Grid(5,4);
+    grid(1, 0) = Cell::ALIVE;
+    grid(4, 0) = Cell::ALIVE;
+    grid(0, 1) = Cell::ALIVE;
+    grid(0, 2) = Cell::ALIVE;
+    grid(4, 2) = Cell::ALIVE;
+    grid(0, 3) = Cell::ALIVE;
+    grid(1, 3) = Cell::ALIVE;
+    grid(2, 3) = Cell::ALIVE;
+    grid(3, 3) = Cell::ALIVE;
     return grid;
 }
 

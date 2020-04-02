@@ -5,8 +5,11 @@
 int main(int argc, char* argv[]) {
 
 	Grid grid = Zoo::glider();
-	std::cout << "what" << std::endl;
-	Zoo::save_binary("./out.bgol", grid);
+	std::cout << grid << std::endl;
+	grid(0, 0) = Cell::ALIVE;
+	//grid.set(0, 0, Cell::ALIVE);
+	std::cout << grid << std::endl;
+
 
 	return 0;
 }
