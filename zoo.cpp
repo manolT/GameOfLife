@@ -362,7 +362,9 @@ Grid Zoo::load_binary(std::string path) {
  */
 void Zoo::save_binary(std::string path, Grid grid) {
     std::ofstream ofs(path, std::ios::binary);
-    
+    if (!ofs.is_open()) {
+        throw std::runtime_error("load_binary() : File cannot be opened.");
+    }
 
     int width = grid.get_width();
     int height = grid.get_height();
@@ -391,7 +393,7 @@ void Zoo::save_binary(std::string path, Grid grid) {
             if (grid(x,y) == Cell::ALIVE && !outOfBounds) {
                 bufferInt += pow(2, j);
             }
-            std::cout << "x:" << x << "  y:" << y << std::endl;
+            
             //control the grid pointer
             if (x == grid.get_width() - 1) {
                 if (y == grid.get_height() - 1) {
