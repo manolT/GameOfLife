@@ -148,7 +148,7 @@ Grid Zoo::light_weight_spaceship() {
  *          - Newline characters are not found when expected during parsing.
  *          - The character for a cell is not the ALIVE or DEAD character.
  */
-Grid Zoo::load_ascii(std::string path) {
+Grid Zoo::load_ascii(const std::string path) {
     std::ifstream ifs(path, std::ifstream::in);
 
     if (!ifs.is_open()) {
@@ -243,7 +243,7 @@ Grid Zoo::load_ascii(std::string path) {
  * @throws
  *      Throws std::runtime_error or sub-class if the file cannot be opened.
  */
-void Zoo::save_ascii(std::string path, Grid grid) {
+void Zoo::save_ascii(const std::string path, const Grid grid) {
     std::ofstream ofs(path, std::ofstream::out);
     if (!ofs.is_open()) {
         throw std::runtime_error("save_ascii() : File cannot be opened.");
@@ -281,7 +281,7 @@ void Zoo::save_ascii(std::string path, Grid grid) {
  *          - The file cannot be opened.
  *          - The file ends unexpectedly.
  */
-Grid Zoo::load_binary(std::string path) {
+Grid Zoo::load_binary(const std::string path) {
     std::ifstream ifs;
     ifs.open(path, std::ios::binary | std::ios::in);
     if (!ifs.is_open()) {
@@ -360,7 +360,7 @@ Grid Zoo::load_binary(std::string path) {
  * @throws
  *      Throws std::runtime_error or sub-class if the file cannot be opened.
  */
-void Zoo::save_binary(std::string path, Grid grid) {
+void Zoo::save_binary(const std::string path, const Grid grid) {
     std::ofstream ofs(path, std::ios::binary);
     if (!ofs.is_open()) {
         throw std::runtime_error("load_binary() : File cannot be opened.");

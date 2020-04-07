@@ -253,7 +253,7 @@ unsigned int Grid::get_dead_cells() const {
  * @param square_size
  *      The new edge size for both the width and height of the grid.
  */
-void Grid::resize(unsigned int square_size){
+void Grid::resize(const unsigned int square_size){
     this->resize(square_size, square_size);
 }
 
@@ -279,7 +279,7 @@ void Grid::resize(unsigned int square_size){
  * @param new_height
  *      The new height for the grid.
  */
-void Grid::resize(unsigned int newWidth, unsigned int newHeight) {
+void Grid::resize(const unsigned int newWidth, const unsigned int newHeight) {
     std::vector<Cell> newVec(newWidth * newHeight, Cell::DEAD);
     
     
@@ -310,11 +310,11 @@ void Grid::resize(unsigned int newWidth, unsigned int newHeight) {
  * @return
  *      The 1d offset from the start of the data array where the desired cell is located.
  */
-unsigned int Grid::get_index(unsigned int x, unsigned int y) const {
+unsigned int Grid::get_index(const unsigned int x, const unsigned int y) const {
     return get_index_new_grid(x,y,this->width);
 }
 
-unsigned int Grid::get_index_new_grid(unsigned int x, unsigned int y, unsigned int newWidth) const{
+unsigned int Grid::get_index_new_grid(const unsigned int x, const unsigned int y, const unsigned int newWidth) const{
     unsigned int index = newWidth * y + x;
     return index;
 }
@@ -347,7 +347,7 @@ unsigned int Grid::get_index_new_grid(unsigned int x, unsigned int y, unsigned i
  * @throws
  *      std::exception or sub-class if x,y is not a valid coordinate within the grid.
  */
-Cell Grid::get(unsigned int x, unsigned int y) const {
+Cell Grid::get(const unsigned int x, const unsigned int y) const {
     if (!are_valid_coordinates(x, y)) {
         throw std::invalid_argument("get() : Invalid coordinates.");
     }
@@ -382,7 +382,7 @@ Cell Grid::get(unsigned int x, unsigned int y) const {
  * @throws
  *      std::exception or sub-class if x,y is not a valid coordinate within the grid.
  */
-void Grid::set(unsigned int x, unsigned int y, Cell cell) {
+void Grid::set(const unsigned int x, const unsigned int y, Cell cell) {
     if (!are_valid_coordinates(x, y)) {
         throw std::invalid_argument("set() : Invalid coordinates.");
     }
@@ -424,7 +424,7 @@ void Grid::set(unsigned int x, unsigned int y, Cell cell) {
  * @throws
  *      std::runtime_error or sub-class if x,y is not a valid coordinate within the grid.
  */
-Cell& Grid::operator()(unsigned int x, unsigned int y){
+Cell& Grid::operator()(const unsigned int x, const unsigned int y){
     if (!are_valid_coordinates(x, y)) {
         throw std::runtime_error("Cell& operator() : Invalid coordinates.");
     }
@@ -461,7 +461,7 @@ Cell& Grid::operator()(unsigned int x, unsigned int y){
  * @throws
  *      std::exception or sub-class if x,y is not a valid coordinate within the grid.
  */
-Cell Grid::operator()(unsigned int x, unsigned int y) const {
+Cell Grid::operator()(const unsigned int x, const unsigned int y) const {
     if (!are_valid_coordinates(x, y)) {
         throw std::invalid_argument("Cell operator() : Invalid coordinates.");
     }
@@ -502,7 +502,7 @@ Cell Grid::operator()(unsigned int x, unsigned int y) const {
  *      std::exception or sub-class if x0,y0 or x1,y1 are not valid coordinates within the grid
  *      or if the crop window has a negative size.
  */
-Grid Grid::crop(unsigned int x0, unsigned int y0, unsigned int x1, unsigned int y1) const {
+Grid Grid::crop(const unsigned int x0, const unsigned int y0, const unsigned int x1, const unsigned int y1) const {
     if (x0 >= this->width || x0 < 0 || x1 > this->width || x1 < 0 || 
         y0 >= this->height || y0 < 0 || y1 > this->height || y1 < 0) {
         throw std::invalid_argument("crop() : Invalid coordinates.");
@@ -560,7 +560,7 @@ Grid Grid::crop(unsigned int x0, unsigned int y0, unsigned int x1, unsigned int 
  * @throws
  *      std::exception or sub-class if the other grid being placed does not fit within the bounds of the current grid.
  */
-void Grid::merge(const Grid other, unsigned int x0, unsigned int y0, bool alive_only) {
+void Grid::merge(const Grid other, const unsigned int x0, const unsigned int y0, const bool alive_only) {
 
     if (other.get_width() + x0 > this->width || other.get_height() + y0 > this->height 
         || !are_valid_coordinates(x0,y0)) {
@@ -603,7 +603,7 @@ void Grid::merge(const Grid other, unsigned int x0, unsigned int y0, bool alive_
  * @return
  *      Returns a copy of the grid that has been rotated.
  */
-Grid Grid::rotate(int rotation) const {
+Grid Grid::rotate(const int rotation) const {
     int realRotation = 0;
     if (rotation < 0) {
         realRotation = rotation % -4;
@@ -723,7 +723,7 @@ std::ostream& operator<<(std::ostream& lhs, const Grid& rhs) {
     return lhs;
 }
 
-bool Grid::are_valid_coordinates(unsigned int x, unsigned int y) const {
+bool Grid::are_valid_coordinates(const unsigned int x, const unsigned int y) const {
     if (x >= 0 && x < this->width && y >= 0 && y < this->height) {
         return true;
     } else {

@@ -36,9 +36,9 @@ class Grid {
         unsigned int height;
         std::vector<Cell> gridVector;
 
-        unsigned int get_index(unsigned int x, unsigned int y) const;
-        unsigned int get_index_new_grid(unsigned int x, unsigned int y, unsigned int newWidth) const;
-        bool are_valid_coordinates(unsigned int x, unsigned int y) const;
+        unsigned int get_index(const unsigned int x, const unsigned int y) const;
+        unsigned int get_index_new_grid(const unsigned int x, const unsigned int y, const unsigned int newWidth) const;
+        bool are_valid_coordinates(const unsigned int x, const unsigned int y) const;
 
     public:
 
@@ -46,21 +46,21 @@ class Grid {
         Grid();
         Grid(const unsigned int square_size);
         Grid(const unsigned int width, const unsigned int height);
-        //const??
+        //const?
         unsigned int get_width() const;
         unsigned int get_height() const;
         unsigned int get_total_cells() const;
         unsigned int get_alive_cells() const;
         unsigned int get_dead_cells() const;
-        void resize(unsigned int, unsigned int);
-        void resize(unsigned int);
-        Cell get(unsigned int x, unsigned int y) const;
-        void set(unsigned int x, unsigned int y, Cell cell);
-        Cell operator()(unsigned int x, unsigned int y) const;
-        Cell& operator()(unsigned int x, unsigned int y);
-        Grid crop(unsigned int x0, unsigned int y0, unsigned int x1, unsigned int y1) const;
-        void merge(const Grid other, unsigned int x0, unsigned int y0, bool alive_only = false);
-        Grid rotate(int rotation) const;
+        void resize(const unsigned int, const unsigned int);
+        void resize(const unsigned int);
+        Cell get(const unsigned int x, const unsigned int y) const;
+        void set(const unsigned int x, const unsigned int y, Cell cell);
+        Cell operator()(const unsigned int x, const unsigned int y) const;
+        Cell& operator()(const unsigned int x, const unsigned int y);
+        Grid crop(const unsigned int x0, const unsigned int y0, const unsigned int x1, const unsigned int y1) const;
+        void merge(const Grid other, const unsigned int x0, const unsigned int y0, const bool alive_only = false);
+        Grid rotate(const int rotation) const;
 
         friend std::ostream& operator<<(std::ostream& lhs, const Grid& rhs);
 

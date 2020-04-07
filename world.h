@@ -25,13 +25,14 @@ class World {
         Grid currGrid;
         Grid nextGrid;
 
-        unsigned int count_neighbours(unsigned int x, unsigned int y, bool torodial) const;
+        unsigned int count_neighbours(const unsigned int x, const unsigned int y, 
+            const bool torodial) const;
 
     public:
         World();
-        World(unsigned int square_size);
-        World(unsigned int width, unsigned int height);
-        World(const Grid initial_state);
+        World(const unsigned int square_size);
+        World(const unsigned int width, const unsigned int height);
+        World(const const Grid initial_state);
 
         unsigned int get_width() const;
         unsigned int get_height() const;
@@ -39,10 +40,10 @@ class World {
         unsigned int get_alive_cells() const;
         unsigned int get_dead_cells() const;
         const Grid& get_state() const;
-        void resize(unsigned int square_size);
-        void resize(unsigned int new_width, unsigned int new_height);
-        void step(bool torodial = false);
-        void advance(unsigned int steps, bool torodial = false);
+        void resize(const unsigned int square_size);
+        void resize(const unsigned int new_width, const unsigned int new_height);
+        void step(const bool torodial = false);
+        void advance(const unsigned int steps, const bool torodial = false);
 
 
 };
