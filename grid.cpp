@@ -349,7 +349,7 @@ unsigned int Grid::get_index_new_grid(unsigned int x, unsigned int y, unsigned i
  */
 Cell Grid::get(unsigned int x, unsigned int y) const {
     if (!are_valid_coordinates(x, y)) {
-        throw std::invalid_argument("get() : Invalid coordinates.");
+        throw const std::invalid_argument("get() : Invalid coordinates.");
     }
     return this->operator()(x,y);
 }
@@ -384,7 +384,7 @@ Cell Grid::get(unsigned int x, unsigned int y) const {
  */
 void Grid::set(unsigned int x, unsigned int y, Cell cell) {
     if (!are_valid_coordinates(x, y)) {
-        throw std::invalid_argument("set() : Invalid coordinates.");
+        throw const std::invalid_argument("set() : Invalid coordinates.");
     }
     this->operator()(x, y) = cell;
 }
@@ -426,7 +426,7 @@ void Grid::set(unsigned int x, unsigned int y, Cell cell) {
  */
 Cell& Grid::operator()(unsigned int x, unsigned int y){
     if (!are_valid_coordinates(x, y)) {
-        throw std::runtime_error("Cell& operator() : Invalid coordinates.");
+        throw const std::runtime_error("Cell& operator() : Invalid coordinates.");
     }
     return this->gridVector[get_index(x, y)];
 }
@@ -463,7 +463,7 @@ Cell& Grid::operator()(unsigned int x, unsigned int y){
  */
 Cell Grid::operator()(unsigned int x, unsigned int y) const {
     if (!are_valid_coordinates(x, y)) {
-        throw std::invalid_argument("Cell operator() : Invalid coordinates.");
+        throw const std::invalid_argument("Cell operator() : Invalid coordinates.");
     }
     return this->gridVector[get_index(x, y)];
 }
@@ -505,10 +505,10 @@ Cell Grid::operator()(unsigned int x, unsigned int y) const {
 Grid Grid::crop(unsigned int x0, unsigned int y0, unsigned int x1, unsigned int y1) const {
     if (x0 >= this->width || x0 < 0 || x1 > this->width || x1 < 0 || 
         y0 >= this->height || y0 < 0 || y1 > this->height || y1 < 0) {
-        throw std::invalid_argument("crop() : Invalid coordinates.");
+        throw const std::invalid_argument("crop() : Invalid coordinates.");
     }
     else if (x0 > x1 || y0 > y1) {
-        throw std::invalid_argument("crop() : Negative size of crop window.");
+        throw const std::invalid_argument("crop() : Negative size of crop window.");
     }
     unsigned int newWidth = x1 - x0;
     unsigned int newHeight = y1 - y0;
@@ -564,7 +564,7 @@ void Grid::merge(const Grid other, unsigned int x0, unsigned int y0, bool alive_
 
     if (other.get_width() + x0 > this->width || other.get_height() + y0 > this->height 
         || !are_valid_coordinates(x0,y0)) {
-        throw std::invalid_argument("merge() : The other grid does not fit in this grid.");
+        throw const std::invalid_argument("merge() : The other grid does not fit in this grid.");
     }
 
     for (unsigned int y = y0; y < width && y < y0 + other.get_width(); y++) {
