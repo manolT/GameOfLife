@@ -18,7 +18,7 @@
  *          - Moving off the left edge you appear on the right edge and vice versa.
  *          - Moving off the top edge you appear on the bottom edge and vice versa.
  *
- * @author YOUR_STUDENT_NUMBER
+ * @author 966022
  * @date March, 2020
  */
 #include "world.h"
@@ -107,8 +107,8 @@ World::World(unsigned int width, unsigned int height) {
  *      The state of the constructed world.
  */
 World::World(const Grid initial_state) : World(initial_state.get_width(), initial_state.get_height()) {
-    for (int y = 0; y < initial_state.get_height(); y++) {
-        for (int x = 0; x < initial_state.get_width(); x++) {
+    for (unsigned int y = 0; y < initial_state.get_height(); y++) {
+        for (unsigned int x = 0; x < initial_state.get_width(); x++) {
             this->currGrid(x, y) = initial_state(x, y);
             this->nextGrid(x, y) = initial_state(x, y);
         }
@@ -368,22 +368,23 @@ unsigned int World::count_neighbours(unsigned int x, unsigned int y, bool torodi
     int y_minus = y - 1;
     int y_plus = y + 1;
     unsigned int counter = 0;
+    //the unsigned int and int casting are done to not get warnings
     if(torodial){
         if (x_minus == -1) {
-            x_minus = this->get_width() - 1;
+            x_minus = (int)this->get_width() - 1;
         } 
-        else if (x_plus == this->get_width()) {
+        else if (x_plus == (int)this->get_width()) {
             x_plus = 0;
         }
         if (y_minus == -1) {
             y_minus = this->get_height() - 1;
         }
-        else if (y_plus == this->get_height()) {
+        else if (y_plus == (int)this->get_height()) {
             y_plus = 0;
         }
         int arraySize = 3;
-        unsigned int setX[arraySize] = {x_minus, x, x_plus};
-        unsigned int setY[arraySize] = { y_minus, y, y_plus};
+        unsigned int setX[arraySize] = {(unsigned int)x_minus, x, (unsigned int)x_plus};
+        unsigned int setY[arraySize] = {(unsigned int)y_minus, y, (unsigned int)y_plus};
         for (int i = 0; i < arraySize; i++) {
             for (int j = 0; j < arraySize; j++) {
                 if (this->currGrid(setX[j], setY[i]) == Cell::ALIVE) {
@@ -397,13 +398,13 @@ unsigned int World::count_neighbours(unsigned int x, unsigned int y, bool torodi
         if (x_minus == -1) {
             x_minus++;
         }
-        else if (x_plus == this->get_width()) {
+        else if (x_plus == (int)this->get_width()) {
             x_plus--;
         }
         if (y_minus == -1) {
             y_minus++;
         }
-        else if (y_plus == this->get_height()) {
+        else if (y_plus == (int)this->get_height()) {
             y_plus--;
         }
         for (int j = y_minus; j <= y_plus; j++) {
@@ -449,8 +450,8 @@ unsigned int World::count_neighbours(unsigned int x, unsigned int y, bool torodi
  */
 void World::step(bool torodial) {
 
-    for (int y = 0; y < this->get_height(); y++) {
-        for (int x = 0; x < this->get_height(); x++) {
+    for (unsigned int y = 0; y < this->get_height(); y++) {
+        for (unsigned int x = 0; x < this->get_height(); x++) {
             int neighbours = this->count_neighbours(x, y, torodial);
             if (currGrid(x, y) == Cell::ALIVE) {
                 if (neighbours < 2 || neighbours > 3) {
@@ -489,7 +490,7 @@ void World::step(bool torodial) {
  *      wraps to the right edge and the top to the bottom. Defaults to false.
  */
 void World::advance(unsigned int steps, bool torodial) {
-    for (int i = 0; i < steps; i++) {
+    for (unsigned int i = 0; i < steps; i++) {
         this->step(torodial);
     }
 }

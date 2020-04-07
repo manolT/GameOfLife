@@ -152,7 +152,7 @@ Grid Zoo::load_ascii(std::string path) {
     std::ifstream ifs(path, std::ifstream::in);
 
     if (!ifs.is_open()) {
-        throw const std::runtime_error("load_ascii() : File cannot be opened.");
+        throw std::runtime_error("load_ascii() : File cannot be opened.");
     }
 
     //read width, including multiple digit width
@@ -167,10 +167,10 @@ Grid Zoo::load_ascii(std::string path) {
        width = std::stoi(intermediateS);
     }
     catch (std::invalid_argument const &e) {
-        throw const std::runtime_error("load_ascii() : Cannot parse width, invalid input argument.");
+        throw std::runtime_error("load_ascii() : Cannot parse width, invalid input argument.");
     } 
     catch (std::out_of_range const& e) {
-        throw const std::runtime_error("load_ascii() : Cannot parse width, out of range.");
+        throw std::runtime_error("load_ascii() : Cannot parse width, out of range.");
     }
 
     //read height
@@ -184,16 +184,16 @@ Grid Zoo::load_ascii(std::string path) {
         height = std::stoi(intermediateS);
     }
     catch (std::invalid_argument const& e) {
-        throw const std::runtime_error("load_ascii() : Cannot parse height, invalid input argument.");
+        throw std::runtime_error("load_ascii() : Cannot parse height, invalid input argument.");
     }
     catch (std::out_of_range const& e) {
-        throw const std::runtime_error("load_ascii() : Cannot parse height, out of range.");
+        throw std::runtime_error("load_ascii() : Cannot parse height, out of range.");
     }
 
     Grid grid = Grid(width, height);
 
-    for (int y = 0; y < height; y++) {
-        for (int x = 0; x < width; x++) {
+    for (unsigned int y = 0; y < height; y++) {
+        for (unsigned int x = 0; x < width; x++) {
             inC = ifs.get();
             if (inC == '#') {
                 grid(x, y) = Cell::ALIVE;
@@ -202,13 +202,13 @@ Grid Zoo::load_ascii(std::string path) {
                 grid(x, y) = Cell::DEAD;
             }
             else {
-                throw const std::runtime_error("load_ascii() : Character for a cell is incorrect.");
+                throw std::runtime_error("load_ascii() : Character for a cell is incorrect.");
             }
         }
         inC = ifs.get();
         //allows for last new line to not be there
         if (inC != '\n' && y != height-1) {
-            throw const std::runtime_error("load_ascii() : Missing new line character when expected.");
+            throw std::runtime_error("load_ascii() : Missing new line character when expected.");
         }
     }
 
@@ -246,12 +246,12 @@ Grid Zoo::load_ascii(std::string path) {
 void Zoo::save_ascii(std::string path, Grid grid) {
     std::ofstream ofs(path, std::ofstream::out);
     if (!ofs.is_open()) {
-        throw const std::runtime_error("save_ascii() : File cannot be opened.");
+        throw std::runtime_error("save_ascii() : File cannot be opened.");
     }
 
     ofs << grid.get_width() << ' ' << grid.get_height() << '\n';
-    for (int y = 0; y < grid.get_height(); y++) {
-        for (int x = 0; x < grid.get_width(); x++) {
+    for (unsigned int y = 0; y < grid.get_height(); y++) {
+        for (unsigned int x = 0; x < grid.get_width(); x++) {
             ofs << (char)grid(x, y);
         }
         ofs << '\n';
@@ -285,7 +285,7 @@ Grid Zoo::load_binary(std::string path) {
     std::ifstream ifs;
     ifs.open(path, std::ios::binary | std::ios::in);
     if (!ifs.is_open()) {
-        throw const std::runtime_error("load_binary() : File cannot be opened.");
+        throw std::runtime_error("load_binary() : File cannot be opened.");
     }
 
     const unsigned int sizeOfInt = 4;
@@ -310,11 +310,11 @@ Grid Zoo::load_binary(std::string path) {
     for (int i = 0; i < loops; i++) {
 
         if (ifs.eof()) {
-            throw const std::runtime_error("load_binary() : Unexpected end of file.");
+            throw std::runtime_error("load_binary() : Unexpected end of file.");
         }
 
         ifs.read(reinterpret_cast<char*>(&bytesHolder), sizeOfInt);
-        for (int j = 0; j < sizeOfInt * 8; j++) {
+        for (unsigned int j = 0; j < sizeOfInt * 8; j++) {
             //isolating the rightmost bit in the int and then the next to the left
             unsigned int a = bytesHolder << (bitsInt - 1 - j);
             a = a >> (bitsInt - 1);
@@ -363,7 +363,7 @@ Grid Zoo::load_binary(std::string path) {
 void Zoo::save_binary(std::string path, Grid grid) {
     std::ofstream ofs(path, std::ios::binary);
     if (!ofs.is_open()) {
-        throw const std::runtime_error("load_binary() : File cannot be opened.");
+        throw std::runtime_error("load_binary() : File cannot be opened.");
     }
 
     int width = grid.get_width();
@@ -379,8 +379,8 @@ void Zoo::save_binary(std::string path, Grid grid) {
     }
 
     //grid coordinates and out of bound control
-    int x = 0;
-    int y = 0;
+    unsigned int x = 0;
+    unsigned int y = 0;
     bool outOfBounds = false;
     if (grid.get_width() == 0) {
         outOfBounds = true;
